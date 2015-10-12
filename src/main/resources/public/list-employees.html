@@ -1,0 +1,39 @@
+<style>
+    .odd {
+        background-color: #FFF;
+    }
+    .even {
+        background-color: #AFF;
+    }
+    .main{
+        margin: 10px auto;
+        width:350px;
+        border: 1px solid #ccc;
+        padding: 20px;	
+    }
+</style>
+<table cellpadding="10">
+	<tr>
+		<th align="left"><a href="" ng-click="sortField = 'personnelId'; reverse = !reverse">ID</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'firstName'; reverse = !reverse">First Name</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'lastName'; reverse = !reverse">Last Name</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'phoneNumber'; reverse = !reverse">Phone Number</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'email'; reverse = !reverse">Email</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'startDate'; reverse = !reverse">Start Date</a></th>
+		<th align="left"><a href="" ng-click="sortField = 'login'; reverse = !reverse">Login</a></th>
+		<th align="left">Action</th>
+	</tr>
+	<tr ng-repeat="employee in employees | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
+		<td>{{employee.personnelId}}</td>
+		<td>{{employee.firstName}}</td>
+		<td>{{employee.lastName}}</td>
+		<td>{{employee.phoneNumber}}</td>
+		<td>{{employee.email}}</td>
+		<td>{{employee.startDate}}</td>
+		<td>{{employee.login}}</td>
+		<td><a href="#/edit/{{employee.personnelId}}">Edit</a> | <a href="/#" ng-click="deleteEmployee(employee)">Delete</a></td>
+	</tr>
+</table>
+<br>
+<br>
+<input onclick="window.location='/#/create';" type="submit" value="New Person"/>

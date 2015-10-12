@@ -1,0 +1,64 @@
+<style>
+    label.field {
+		text-align: right;
+		float: left;
+		width: 100px;
+	}
+</style>
+<form name="updateEmployeeForm" action="/#" ng-submit="updateEmployee()" novalidate>
+	<p>
+		<label class="field" for="employee.personnelId">PersonnelId: </label>
+		<input name="personnelId" ng-model="employee.personnelId" class="form-control" type="text" ng-disabled="true"/>
+		<span style="color:red" ng-show="updateEmployeeForm.personnelId.$invalid">
+			<span ng-show="updateEmployeeForm.personnelId.$error.required">Personnel ID is required.</span>
+			<span ng-show="updateEmployeeForm.personnelId.$error.pattern">Personnel ID must be less than 9 digits.</span>
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.firstName">First Name: </label>
+		<input name="firstName" ng-model="employee.firstName" class="form-control" type="text" ng-pattern=/^.{1,255}$/ placeholder="First Name" required/>
+		<span style="color:red" ng-show="updateEmployeeForm.firstName.$invalid">
+			<span ng-show="updateEmployeeForm.firstName.$error.required">First name is required.</span>
+			<span ng-show="updateEmployeeForm.firstName.$error.pattern">First name must be less than 255 characters.</span>
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.lastName">Last Name: </label>
+		<input name="lastName" ng-model="employee.lastName" class="form-control" type="text" ng-pattern=/^.{1,255}$/ placeholder="Last Name" required/>
+		<span style="color:red" ng-show="updateEmployeeForm.lastName.$invalid">
+			<span ng-show="updateEmployeeForm.lastName.$error.required">Last name is required.</span>
+			<span ng-show="updateEmployeeForm.lastName.$error.pattern">Last name must be less than 255 characters.</span>
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.phoneNumber">Phone Number: </label>
+		<input name="phoneNumber" ng-model="employee.phoneNumber" class="form-control" type="text" ng-pattern=/^\(?\d{3}\)?\-?\d{3}\-?\d{4}$/ placeholder="PhoneNumber"/>
+		<span style="color:red" ng-show="updateEmployeeForm.phoneNumber.$invalid && !updateEmployeeForm.phoneNumber.$pristine">
+			Not a valid phone number. Examples: 1234567890, 123-456-7890, (123)-456-7890
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.email">Email: </label>
+		<input name="email" ng-model="employee.email" class="form-control" type="text" 
+		ng-pattern=/^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$/ placeholder="Email"/>
+		<span style="color:red" ng-show="updateEmployeeForm.email.$invalid && !updateEmployeeForm.email.$pristine">
+			Not a valid email.	
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.startDate">Start Date: </label>
+		<input name="startDate" ng-model="employee.startDate" class="form-control" ng-change="change()" type="date"/>
+		<span style="color:red" ng-show="updateEmployeeForm.startDate.$invalid && !updateEmployeeForm.startDate.$pristine">
+			<span ng-show="updateEmployeeForm.startDate.$error.beforeToday">Start date can not be after today.</span>
+		</span>
+	</p>
+	<p>
+		<label class="field" for="employee.login">Login: </label>
+		<input name="login" ng-model="employee.login" class="form-control" type="text" ng-pattern=/^.{1,255}$/ placeholder="Login"/>
+		<span style="color:red" ng-show="updateEmployeeForm.login.$invalid && !updateEmployeeForm.login.$pristine">
+			<span ng-show="updateEmployeeForm.login.$error.pattern">Login must be less than 255 characters.</span>
+		</span>
+	</p>
+	<br>
+	<input type="submit" value="Submit" ng-disabled="updateEmployeeForm.$invalid">
+</form>

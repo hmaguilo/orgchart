@@ -1,0 +1,31 @@
+<html ng-app="employeeApp">
+	<head>
+		<meta charset="utf-8">
+		<title>Java Dojo Orgchart Web Application</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
+    	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
+		<script src="employeeControllers.js"></script>
+		<script src="app.js"></script>
+		<style>
+            .odd {
+                background-color: #FFF;
+            }
+            .even {
+                background-color: #AFF;
+            }
+            .main{
+                margin: 10px auto;
+                width:350px;
+                border: 1px solid #ccc;
+                padding: 20px;	
+            }
+        </style>
+		
+	</head>
+
+	<body>
+		<h1>Personnel Listing</h1>
+		<br>
+		<div ng-view></div>
+	</body>
+</html>

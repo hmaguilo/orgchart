@@ -9,15 +9,20 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import orgchart.model.Employee;
 
+@Named
 public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 
-	@Autowired
+	@Inject
 	private JdbcTemplate jdbc;
 	
 	public void create(Employee employee) {
@@ -104,17 +109,51 @@ public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 			
 			
 	public Collection<Employee> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Employee> results =
+				jdbc.query("SELECT * FROM employee", new ResultRowMapper());
+		
+		return results;
 	}
 
 	public void update(Employee employee) {
-		// TODO Auto-generated method stub
+		
+		Long personnelId = employee.getPersonnelId();
+		String firstName = employee.getFirstName();
+		String lastName = employee.getLastName();
+		String phoneNumber = employee.getPhoneNumber();
+		String email = employee.getEmail();
+		Date startDate = employee.getStartDate();
+		Date endDate = employee.getEndDate();
+		String login = employee.getLogin();
+		String password = employee.getPassword();
+		
+		jdbc.update("UPDATE employee SET "
+				+ "first_name = ?, "
+				+ "last_name = ?, "
+				+ "phone_number = ?, "
+				+ "email = ?, "
+				+ "start_date = ?, "
+				+ "end_date = ?, "
+				+ "login = ?, "
+				+ "password = ?"
+				+ "WHERE personnel_id = ?", 
+				firstName,
+				lastName,
+				phoneNumber,
+				email,
+				startDate,
+				endDate,
+				login,
+				password,
+				personnelId);
 		
 	}
 
 	public void delete(Employee employee) {
-		// TODO Auto-generated method stub
+
+		jdbc.update("DELETE FROM employee WHERE personnel_id = ?",
+				employee.getPersonnelId());
 		
 	}
 

@@ -8,9 +8,12 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import orgchart.model.Employee;
 
@@ -137,5 +140,127 @@ public class EmployeeUtil {
 			
 		return dateObj;
 	}
+	
+	public static boolean validatePhoneNumber(String phoneNumber) {
+		
+		String phoneRegex = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$";
+		Pattern pattern = Pattern.compile(phoneRegex);
+		Matcher matcher = pattern.matcher(phoneNumber);
+		
+		if (matcher.matches()) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean validateEmail(String email) {
+		
+		String emailRegex =
+			"^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		
+		Pattern pattern = Pattern.compile(emailRegex);
+		Matcher matcher = pattern.matcher(email);
+		
+		if (matcher.matches()) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean validateDate(String dateStr) {
+		
+		if (dateStr == null) {
+			return false;
+		}
+		
+		SimpleDateFormat sdf;
+		
+		String slashFormat = "\\d{1,2}/\\d{1,2}/\\d{4}";
+		String dashFormat = "\\d{4}-\\d{1,2}-\\d{1,2}";
+		
+		Pattern slashPattern = Pattern.compile(slashFormat);
+		Pattern dashPattern = Pattern.compile(dashFormat);
+		
+		Matcher slashMatcher = slashPattern.matcher(dateStr);
+		Matcher dashMatcher = dashPattern.matcher(dateStr);
+		
+		if (slashMatcher.matches()) {
+			
+			sdf = new SimpleDateFormat("MM/dd/yyyy");
+			sdf.setLenient(false);
+			
+		}
+		else if (dashMatcher.matches()) {
+			
+			sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setLenient(false);
+
+		}
+		else {
+			System.out.println("no matches found");
+			return false;
+			
+		}
+		
+		try {
+			sdf.parse(dateStr);
+		} catch (ParseException e) {
+			System.out.println("parse failed");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public static boolean validateEmployee(Employee employee) {
+		
+		boolean hasPersonnelId = employee.getPersonnelId() != null;
+		boolean hasFullName =
+				employee.getFirstName() != null && 
+				employee.getLastName() != null;
+		boolean hasValidPhone =
+				employee.getPhoneNumber() == null ||
+				EmployeeUtil.validatePhoneNumber(employee.getPhoneNumber());
+		boolean hasValidEmail = 
+				employee.getEmail() == null ||
+				EmployeeUtil.validateEmail(employee.getEmail());
+		
+		if (
+				!hasPersonnelId 
+				|| !hasFullName
+				|| !hasValidPhone
+				|| !hasValidEmail) {
+			
+			return false;
+			
+		}
+		
+		Date today = new Date(Calendar.getInstance().getTimeInMillis());
+		Date startDate;
+		Date endDate;
+		
+		if ((startDate = employee.getStartDate()) != null 
+				&& startDate.after(today)) {
+
+			return false;
+			
+		}
+		else if ((endDate = employee.getEndDate()) != null 
+				&& endDate.before(startDate)){
+
+			return false;
+			
+		}
+		
+		return true;
+	}
+	
+	
+	
+	
+	
 	
 }
