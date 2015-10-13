@@ -30,9 +30,27 @@ employeeControllers.controller('CreateEmployeeCtrl', function($scope, $http) {
 	$scope.startDate = '';
 	$scope.login = '';
 	
+	$scope.$watch('phoneNumber', function (newValue, oldValue) {
+		if($scope.phoneNumber === '')
+			$scope.phoneNumber = null;
+	});
+	$scope.$watch('email', function (newValue, oldValue) {
+		if($scope.email === '')
+			$scope.email = null;
+	});
+	$scope.$watch('login', function (newValue, oldValue) {
+		if($scope.login === '')
+			$scope.login = null;
+	});
+	
 	var today = new Date();
 	$scope.currentDate = new Date();
+	
+	
+	
+	
 	$scope.createEmployee = function() {
+		
 		$http({
         	method: 'POST',
         	url: '/employee',
