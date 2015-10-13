@@ -176,7 +176,7 @@ public class EmployeeUtil {
 			return false;
 		}
 		
-		SimpleDateFormat sdf;
+		DateFormat sdf;
 		
 		String slashFormat = "\\d{1,2}/\\d{1,2}/\\d{4}";
 		String dashFormat = "\\d{4}-\\d{1,2}-\\d{1,2}";
@@ -258,7 +258,51 @@ public class EmployeeUtil {
 		return true;
 	}
 	
-	
+	public static Date parseDate(String dateStr) {
+		
+		if (dateStr == null) {
+			return null;
+		}
+		
+		Date date = null;
+		
+		DateFormat sdf;
+		
+		String slashFormat = "\\d{1,2}/\\d{1,2}/\\d{4}";
+		String dashFormat = "\\d{4}-\\d{1,2}-\\d{1,2}";
+		
+		Pattern slashPattern = Pattern.compile(slashFormat);
+		Pattern dashPattern = Pattern.compile(dashFormat);
+		
+		Matcher slashMatcher = slashPattern.matcher(dateStr);
+		Matcher dashMatcher = dashPattern.matcher(dateStr);
+		
+		if (slashMatcher.matches()) {
+			
+			sdf = new SimpleDateFormat("MM/dd/yyyy");
+			sdf.setLenient(false);
+			
+		}
+		else if (dashMatcher.matches()) {
+			
+			sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setLenient(false);
+
+		}
+		else {
+			
+			return null;
+			
+		}
+		
+		try {
+			date = new Date(sdf.parse(dateStr).getTime());
+		} catch (ParseException e) {
+			return null;
+		}
+		
+		return date;
+	}
 	
 	
 	

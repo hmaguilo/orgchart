@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import orgchart.model.Employee;
+import orgchart.util.EmployeeUtil;
 
 @Named
 public class EmployeeDaoJdbcTemplate implements EmployeeDao {
@@ -27,28 +28,14 @@ public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 	
 	public void create(Employee employee) {
 		
-		jdbc.update("INSERT INTO employee("
-			+ "personnel_id,"
-			+ "first_name,"
-			+ "last_name,"
-			+ "phone_number,"
-			+ "email,"
-			+ "start_date,"
-			+ "end_date,"
-			+ "login,"
-			+ "password)"
-			+ "VALUES (?,?,?,?,?,?,?,?,?)",
-				employee.getPersonnelId(),
-				employee.getFirstName(),
-				employee.getLastName(),
-				employee.getPhoneNumber(),
-				employee.getEmail(),
-				employee.getStartDate(),
-				employee.getEndDate(),
-				employee.getLogin(),
-				employee.getPassword()
-		);
-		
+		jdbc.update("INSERT INTO employee(" + "personnel_id," + "first_name,"
+			+ "last_name," + "phone_number," + "email," + "start_date,"
+			+ "end_date," + "login," + "password)"
+			+ "VALUES(?,?,?,?,?,?,?,?,?)", employee.getPersonnelId().toString(),
+			employee.getFirstName(), employee.getLastName(),
+			employee.getPhoneNumber(), employee.getEmail(), employee.getStartDate(),
+			employee.getEndDate(), employee.getLogin(), employee.getPassword());
+
 	}
 
 	public Employee findOne(Long personnelId) {
@@ -79,17 +66,8 @@ public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 			String login = rs.getString("login");
 			String password = rs.getString("password");
 			
-			Date startDate = null;
-			Date endDate = null;
-			
-			DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
-			try {
-				startDate = (Date) df.parse(startString);
-				endDate = (Date) df.parse(endString);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Date startDate = EmployeeUtil.parseDate(startString);
+			Date endDate = EmployeeUtil.parseDate(endString);
 			
 			return new Employee(
 					personnelId,
@@ -118,7 +96,7 @@ public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 
 	public void update(Employee employee) {
 		
-		Long personnelId = employee.getPersonnelId();
+		String personnelId = employee.getPersonnelId().toString();
 		String firstName = employee.getFirstName();
 		String lastName = employee.getLastName();
 		String phoneNumber = employee.getPhoneNumber();
@@ -127,26 +105,12 @@ public class EmployeeDaoJdbcTemplate implements EmployeeDao {
 		Date endDate = employee.getEndDate();
 		String login = employee.getLogin();
 		String password = employee.getPassword();
-		
-		jdbc.update("UPDATE employee SET "
-				+ "first_name = ?, "
-				+ "last_name = ?, "
-				+ "phone_number = ?, "
-				+ "email = ?, "
-				+ "start_date = ?, "
-				+ "end_date = ?, "
-				+ "login = ?, "
-				+ "password = ?"
-				+ "WHERE personnel_id = ?", 
-				firstName,
-				lastName,
-				phoneNumber,
-				email,
-				startDate,
-				endDate,
-				login,
-				password,
-				personnelId);
+				
+		jdbc.update("UPDATE employee SET " + "last_name = ?," + "first_name = ?, "
+				+ "phone_number = ?, " + "email = ?, " + "start_date = ?, "
+				+ "end_date = ?, " + "login = ?, " + "password = ? "
+				+ "WHERE personnel_id = ?", lastName, firstName, phoneNumber,
+				email, startDate, endDate, login, password, personnelId);
 		
 	}
 

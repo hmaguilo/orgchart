@@ -3,8 +3,10 @@ package orgchart.controller;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +29,7 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value = "/employee/{personnelId}", method = RequestMethod.GET)
-	public Employee findOne(Long personnelId) {
+	public Employee findOne(@PathVariable("personnelId") Long personnelId) {
 		
 		return service.findOne(personnelId);
 		

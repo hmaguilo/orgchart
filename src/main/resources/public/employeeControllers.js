@@ -1,7 +1,7 @@
 var employeeControllers = angular.module('employeeControllers', []);
 
 employeeControllers.controller('ListEmployeeCtrl', function ($scope, $http){
-	$http.get('/findAll').success(function(data) {
+	$http.get('/employee').success(function(data) {
 		$scope.employees = data;
 	});
 			
@@ -11,7 +11,7 @@ employeeControllers.controller('ListEmployeeCtrl', function ($scope, $http){
 	$scope.deleteEmployee = function(employeeToDelete) {
 		$http({
         	method: 'DELETE',
-        	url: '/delete',
+        	url: '/employee',
         	data: employeeToDelete,
         		headers: {
         			'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ employeeControllers.controller('CreateEmployeeCtrl', function($scope, $http) {
 	$scope.createEmployee = function() {
 		$http({
         	method: 'POST',
-        	url: '/create',
+        	url: '/employee',
         	data: {
         		personnelId: $scope.personnelId,
         		firstName: $scope.firstName,
@@ -64,7 +64,7 @@ employeeControllers.controller('CreateEmployeeCtrl', function($scope, $http) {
 employeeControllers.controller('EditEmployeeCtrl', function($scope, $routeParams, $http) {
 	$http({
         method: 'GET',
-        url: '/findOne/' + $routeParams.personnelId
+        url: '/employee/' + $routeParams.personnelId
       }).success(function(data) {
 		$scope.employee = data;
 	});
@@ -72,7 +72,7 @@ employeeControllers.controller('EditEmployeeCtrl', function($scope, $routeParams
 	$scope.updateEmployee = function() {
 		$http({
         	method: 'PUT',
-        	url: '/update/' + $routeParams.personnelId,
+        	url: '/employee/' + $routeParams.personnelId,
         	data: {
         		personnelId: $scope.employee.personnelId,
         		firstName: $scope.employee.firstName,
